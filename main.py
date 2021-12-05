@@ -86,16 +86,16 @@ def add_tag():
             field_tag.clear()
         with open('notes_data.json', 'w') as file:
             json.dump(notes, file, sort_keys = True)
-def del_tag():
-    if list_tags.selectedItems():
-        key = list_notes.selectedItems()[0].text()
-        tag = field_tag.text()
-        if not tag in notes[key]['tags']:
-            notes[key]['tags'].append(tag)
-            list_tags.addItem(tag)
-            field_tag.clear()
-        with open('notes_data.json', 'w') as file:
-            json.dump(notes, file, sort_keys = True)
+# def del_tag():
+#     if list_tags.selectedItems():
+#         key = list_notes.selectedItems()[0].text()
+#         tag = field_tag.text()
+#         if not tag in notes[key]['tags']:
+#             notes[key]['tags'].append(tag)
+#             list_tags.addItem(tag)
+#             field_tag.clear()
+#         with open('notes_data.json', 'w') as file:
+#             json.dump(notes, file, sort_keys = True)
 button_tag_add.clicked.connect(add_tag)
 button_note_del.clicked.connect(del_note)
 button_note_save.clicked.connect(save_note)
