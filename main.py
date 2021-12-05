@@ -5,6 +5,10 @@ notes = {"text":{
         "tags":["0101", "10101"]
     }
 }
+'''
+with open('notes_data.json', 'w') as file:
+    json.dump(notes, file)
+'''
 app = QApplication([])
 notes_win = QWidget()
 notes_win.setWindowTitle('-Умные заметки')
@@ -86,16 +90,34 @@ def add_tag():
             field_tag.clear()
         with open('notes_data.json', 'w') as file:
             json.dump(notes, file, sort_keys = True)
-# def del_tag():
-#     if list_tags.selectedItems():
-#         key = list_notes.selectedItems()[0].text()
-#         tag = field_tag.text()
-#         if not tag in notes[key]['tags']:
-#             notes[key]['tags'].append(tag)
-#             list_tags.addItem(tag)
-#             field_tag.clear()
-#         with open('notes_data.json', 'w') as file:
-#             json.dump(notes, file, sort_keys = True)
+def del_tag():
+    if list_tags.selectedItems():
+        key = list_notes.selectedItems()[0].text()
+        tag = list_tags.selectedItems()[0].text()
+        notes[key]['tags'].remove(tag)
+        list_tags.clear()
+        list_tags.addItems(notes[key]['tags'])
+        with open('notes_data.json', 'w') as file:
+            json.dump(notes, file, sort_keys=True)
+def search_tag():
+    tag = field_tag.text()
+    if button_tag_search.text() == 'Поиск по тегу' and tag:
+        notes_filtered = {}
+        for note in notes:
+            if tag in notes[note]['tags']:
+                notes_filtered[note] = notes[note]
+        button_tag_search.setText('Сбросить поиск')
+        list_notes.clear()
+        list_tags.clear()
+        list_notes.addItems(notes_filtered)
+    if button_tag_search.text() == 'Сбросить поиск':
+        list_notes.clear()
+        field_tag.clear()
+        list_tags.clear()
+        list_notes.addItems(notes)
+        button_tag_search.setText('Поиск по тегу')
+button_tag_search.clicked.connect(search_tag)
+button_tag_del.clicked.connect(del_tag)
 button_tag_add.clicked.connect(add_tag)
 button_note_del.clicked.connect(del_note)
 button_note_save.clicked.connect(save_note)
